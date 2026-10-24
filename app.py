@@ -318,37 +318,105 @@ if menu == "📊 Dashboard":
     )
    
 # ---------------- HOUSE ----------------
+# elif menu == "🏠 House Monitoring":
+
+#     house_id = st.selectbox("Select House ID", df["House_ID"].unique())
+#     house = df[df["House_ID"] == house_id]
+
+#     # -------- CURRENT DATA --------
+#     st.subheader("📊 Current Data")
+#     st.dataframe(house)
+
+#     if house["Theft_Status"].values[0] == "Suspicious":
+#         st.error("⚡ Abnormal Usage")
+#     else:
+#         st.success("Normal Usage")
+
+#     # -------- PAST HISTORY --------
+#     st.markdown("---")
+#     st.subheader("📜 Past Verification History")
+
+#     try:
+#         history = pd.read_csv("verification_log.csv")
+
+#         # Same house ka history filter
+#         house_history = history[history["House_ID"] == house_id]
+
+#         if house_history.empty:
+#             st.info("No past records found for this house")
+#         else:
+#             st.dataframe(house_history)
+
+#     except:
+#         st.info("No verification history available")
+
+
+
+# ---------------- HOUSE MONITORING ----------------
 elif menu == "🏠 House Monitoring":
 
-    house_id = st.selectbox("Select House ID", df["House_ID"].unique())
-    house = df[df["House_ID"] == house_id]
+    house_id = st.selectbox(
+        "Select House ID",
+        sorted(df["House_ID"].unique())
+    )
 
-    # -------- CURRENT DATA --------
-    st.subheader("📊 Current Data")
-    st.dataframe(house)
+    # Selected house AND selected month
+    house = df[
+        (df["House_ID"] == house_id) &
+        (df["Month"] == month)
+    ]
 
-    if house["Theft_Status"].values[0] == "Suspicious":
-        st.error("⚡ Abnormal Usage")
+    if house.empty:
+        st.warning("No data available for this house in the selected month.")
+
     else:
-        st.success("Normal Usage")
+        row = house.iloc[0]
 
-    # -------- PAST HISTORY --------
-    st.markdown("---")
-    st.subheader("📜 Past Verification History")
+        st.subheader("📊 Current Data")
+        st.dataframe(house)
 
-    try:
-        history = pd.read_csv("verification_log.csv")
+        deviation = float(row["Deviation_%"])
+        usage_ratio = float(row["Usage_Ratio"])
 
-        # Same house ka history filter
-        house_history = history[history["House_ID"] == house_id]
+        # Match the project's existing Target criteria
+        fault_detected = (
+            deviation > 45 or
+            deviation < -30 or
+            usage_ratio > 1.6
+        )
 
-        if house_history.empty:
-            st.info("No past records found for this house")
+        st.markdown("### 🔍 Monitoring Result")
+
+        if fault_detected:
+            st.error("🚨 ABNORMAL USAGE DETECTED")
+            st.write(f"Consumption deviation: {deviation:.2f}%")
+            st.write(f"Usage ratio: {usage_ratio:.2f}")
+            st.warning(
+                "This house requires inspection. "
+                "Abnormal usage alone does not confirm electricity theft."
+            )
         else:
-            st.dataframe(house_history)
+            st.success("✅ Normal Usage")
+            st.write(f"Consumption deviation: {deviation:.2f}%")
+            st.write(f"Usage ratio: {usage_ratio:.2f}")
 
-    except:
-        st.info("No verification history available")
+        st.markdown("---")
+        st.subheader("📜 Past Verification History")
+
+        try:
+            history = pd.read_csv("verification_log.csv")
+            house_history = history[
+                (history["House_ID"] == house_id)
+            ]
+
+            if house_history.empty:
+                st.info("No past records found for this house")
+            else:
+                st.dataframe(house_history)
+
+        except (FileNotFoundError, pd.errors.EmptyDataError):
+            st.info("No verification history available")
+
 # ---------------- ALERTS ----------------
 elif menu == "🚨 Theft Alerts":
 
