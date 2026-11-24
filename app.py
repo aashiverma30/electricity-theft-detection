@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
+from voltbot import render_chatbot 
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="VoltGuard AI", page_icon="⚡", layout="wide")
@@ -223,7 +224,8 @@ menu = st.sidebar.radio("", [
     "🏠 House Monitoring",
     "🚨 Theft Alerts",
     "👨‍💼 Verification",
-    "➕ Add New House"
+    "➕ Add New House",
+    "🤖 VoltBot"
 ])
 
 # month = st.sidebar.selectbox("Select Month", df["Month"].unique())
@@ -763,4 +765,6 @@ elif menu == "➕ Add New House":
         # st.success(f"House {new_house_id} added successfully!")
         st.markdown("### 🧠 AI Explanation")
         st.info(reason)
-        
+# ---------------- VOLTBOT ----------------
+elif menu == "🤖 VoltBot":
+    render_chatbot(df, month)
