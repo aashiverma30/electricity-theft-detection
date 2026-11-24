@@ -13,38 +13,195 @@ st.set_page_config(page_title="VoltGuard AI", page_icon="⚡", layout="wide")
 # ---------------- UI ----------------
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] { font-family: 'Poppins', sans-serif; }
+
+/* ---------- Main background ---------- */
 [data-testid="stAppViewContainer"] {
-    background-color: #000000;
+    background: radial-gradient(circle at top, #14120a 0%, #000000 55%);
     color: white;
 }
+[data-testid="stHeader"] { background: transparent; }
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 1250px;
+}
+
+/* ---------- Title ---------- */
 .title-text {
-    font-size: 45px;
+    font-size: 52px;
     font-weight: 700;
     text-align: center;
-    background: linear-gradient(90deg,#FFD700,#FFFFFF);
+    letter-spacing: 1px;
+    background: linear-gradient(90deg,#D4AF37,#FFFFFF,#D4AF37);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    padding-bottom: 4px;
+}
+center { color: #bdbdbd; font-weight: 300; letter-spacing: 2px; font-size: 15px; }
+
+/* ---------- Divider ---------- */
+hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent) !important;
+    margin: 1.5rem 0 !important;
 }
 
+/* ---------- Headings (soft gold, slim accent bar) ---------- */
+h2, h3 {
+    color: #D4AF37 !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    border-left: 3px solid #D4AF37;
+    padding: 0 0 0 12px !important;
+    margin: 1.8rem 0 1rem 0 !important;
+}
+
+/* ---------- Sidebar (unchanged look) ---------- */
 [data-testid="stSidebar"] {
-    background: #050505;
+    background: linear-gradient(180deg,#0a0a0a,#050505);
+    border-right: 1px solid rgba(255,215,0,0.25);
+}
+[data-testid="stSidebar"] h2 {
+    color: #FFD700 !important;
+    border-left: none;
+    text-align: center;
+    padding-left: 0 !important;
+}
+[data-testid="stSidebar"] div[role="radiogroup"] { gap: 8px; }
+[data-testid="stSidebar"] div[role="radiogroup"] label {
+    background: #111111;
+    border: 1px solid rgba(255,215,0,0.15);
+    border-radius: 12px;
+    padding: 10px 14px;
+    width: 100%;
+    transition: all 0.25s ease;
+}
+[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+    border-color: #FFD700;
+    background: #1a1a1a;
+    transform: translateX(4px);
+    box-shadow: 0 0 12px rgba(255,215,0,0.25);
 }
 
+/* ---------- Metric cards ---------- */
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg,#111111,#1a1a1a);
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 18px;
+    padding: 22px 26px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+[data-testid="stMetric"]:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,175,55,0.5);
+    box-shadow: 0 6px 22px rgba(212,175,55,0.12);
+}
+[data-testid="stMetricLabel"] { color: #bdbdbd !important; font-size: 15px; }
+[data-testid="stMetricValue"] { color: #D4AF37 !important; font-weight: 700; font-size: 38px; }
+
+/* ---------- Custom cards ---------- */
 .card {
     background: linear-gradient(145deg,#111111,#1a1a1a);
-    padding: 30px;
+    padding: 28px 30px;
     border-radius: 20px;
-    box-shadow: 0 0 15px rgba(255,215,0,0.2);
+    border: 1px solid rgba(212,175,55,0.25);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
     margin-bottom: 25px;
+    transition: all 0.3s ease;
 }
+.card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,175,55,0.5);
+    box-shadow: 0 6px 22px rgba(212,175,55,0.12);
+}
+.card h3 {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 6px 0 !important;
+    color: #bdbdbd !important;
+    font-size: 17px;
+    font-weight: 500 !important;
+}
+.card h2 {
+    border: none !important;
+    padding: 0 !important;
+    margin: 4px 0 10px 0 !important;
+    color: #D4AF37 !important;
+    font-size: 34px;
+    font-weight: 700 !important;
+}
+.card p  { color: #9a9a9a; margin: 0; font-size: 14px; }
+
+/* ---------- Buttons ---------- */
+.stButton > button {
+    background: linear-gradient(90deg,#D4AF37,#B8962E);
+    color: #000;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 30px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 10px rgba(212,175,55,0.2);
+}
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(212,175,55,0.35);
+    color: #000;
+}
+
+/* ---------- Inputs ---------- */
+[data-testid="stNumberInput"] input,
+[data-testid="stTextArea"] textarea,
+div[data-baseweb="select"] > div {
+    background-color: #111111 !important;
+    border: 1px solid rgba(212,175,55,0.25) !important;
+    border-radius: 10px !important;
+    color: white !important;
+}
+[data-testid="stNumberInput"] input:focus,
+[data-testid="stTextArea"] textarea:focus {
+    border-color: #D4AF37 !important;
+    box-shadow: 0 0 6px rgba(212,175,55,0.3) !important;
+}
+
+/* ---------- Tables & charts ---------- */
+[data-testid="stDataFrame"] {
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 14px;
+    padding: 6px;
+    background: #0d0d0d;
+}
+[data-testid="stVegaLiteChart"], [data-testid="stArrowVegaLiteChart"] {
+    background: #0d0d0d;
+    border: 1px solid rgba(212,175,55,0.15);
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+/* ---------- Alerts (info / success / error) ---------- */
+[data-testid="stAlert"] {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("<div class='title-text'>⚡ VoltGuard AI</div>", unsafe_allow_html=True)
-st.markdown("<center>Advanced Electricity Theft Monitoring System</center>", unsafe_allow_html=True)
+st.markdown("<center>⚡ ADVANCED ELECTRICITY THEFT MONITORING SYSTEM ⚡</center>", unsafe_allow_html=True)
 st.markdown("---")
 
 # ---------------- LOAD DATA ----------------
@@ -285,7 +442,7 @@ if menu == "📊 Dashboard":
             st.success(f"✅ Normal Usage ({round(deviation,2)}%)")
 
             # ---------------- GOVERNMENT IMPACT PANEL ----------------
-    st.markdown("## 🇮🇳 Government & DISCOM Impact Analysis")
+    st.markdown("## 🏛️ Government & DISCOM Impact Analysis")
 
     estimated_loss = suspicious * 5000  # hypothetical revenue loss per case
 
@@ -433,7 +590,11 @@ elif menu == "👨‍💼 Verification":
 
     st.subheader("Inspector Panel")
 
-    suspicious_ids = df[df["Theft_Status"]=="Suspicious"]["House_ID"].unique()
+    # Always load latest dataset
+    df = pd.read_csv("electricity_theft_dataset_3000houses.csv")
+
+# Get latest suspicious houses
+    suspicious_ids = df[df["Theft_Status"] == "Suspicious"]["House_ID"].unique()
 
     if len(suspicious_ids) > 0:
 
@@ -591,13 +752,15 @@ elif menu == "➕ Add New House":
         updated_data = pd.concat([old_data, new_data], ignore_index=True)
         updated_data.to_csv("electricity_theft_dataset_3000houses.csv", index=False)
         # st.cache_data.clear()
+        st.cache_data.clear()
+        st.cache_resource.clear()
+
+        st.success(f"House {new_house_id} added successfully!")
+
         st.rerun()
         
 
-        st.success(f"House {new_house_id} added successfully!")
+        # st.success(f"House {new_house_id} added successfully!")
         st.markdown("### 🧠 AI Explanation")
         st.info(reason)
         
-
-
-

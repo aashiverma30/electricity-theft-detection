@@ -137,7 +137,7 @@ H12,Mar,247,249,0.0,2,0.8097165991902834,1.008097165991903,0,0,0.0,7.0,0,Normal,
 H12,Apr,247,254,0.0,7,2.834008097165992,1.0283400809716599,0,0,0.0,0.0,0,Normal,Normal usage
 H12,May,331,313,0.0,-18,-5.438066465256798,0.945619335347432,0,0,0.0,8.0,0,Normal,Normal usage
 H12,Jun,356,328,0.0,-28,-7.865168539325842,0.9213483146067416,0,0,0.0,6.0,0,Normal,Normal usage
-H12,Jul,383,366,0.0,-17,-4.43864229765013,0.9556135770234987,0,0,0.0,5.0,0,Normal,Normal usage
+H12,Jul,383,366,0.0,-17,-4.43864229765013,0.9556135770234987,0,0,1.0,5.0,0,Normal,Normal usage
 H12,Aug,247,242,0.0,-5,-2.0242914979757085,0.979757085020243,0,0,0.0,1.0,0,Normal,Normal usage
 H12,Sep,247,272,0.0,25,10.121457489878543,1.1012145748987854,0,0,0.0,11.0,0,Normal,Normal usage
 H12,Oct,247,252,0.0,5,2.0242914979757085,1.0202429149797572,0,0,0.0,10.0,0,Normal,Normal usage
@@ -36000,4 +36000,8 @@ H3000,Oct,150,145,0.0,-5,-3.3333333333333335,0.9666666666666667,0,0,0.0,10.0,0,N
 H3000,Nov,150,136,0.0,-14,-9.333333333333334,0.9066666666666666,0,0,0.0,9.0,0,Normal,Normal usage
 H3000,Dec,207,237,0.0,30,14.492753623188406,1.144927536231884,0,0,0.0,2.0,0,Normal,Normal usage
 3001,Jan,45,78,,33,73.33333333333333,1.7333333333333334,0,1,,,1,Suspicious,"Unusually high consumption, Usage ratio too high, Very low usage (possible tampering)"
-3002,Jan,1,0,,-1,-100.0,0.0,0,1,,,1,Suspicious,"Sudden drop in usage, Very low usage (possible tampering)"
+3002,Jan,1,0,,-1,-100.0,0.0,0,1,0.0,,1,Suspicious,"Sudden drop in usage, Very low usage (possible tampering)"
+3006,Mar,34,67,,33,97.05882352941177,1.9705882352941178,0,1,,,1,Suspicious,"Unusually high consumption, Usage ratio too high, Very low usage (possible tampering)"
+3006,Mar,34,67,,33,97.05882352941177,1.9705882352941178,0,1,,,1,Suspicious,"Unusually high consumption, Usage ratio too high, Very low usage (possible tampering)"
+3006,Mar,34,67,,33,97.05882352941177,1.9705882352941178,0,1,,,1,Suspicious,"Unusually high consumption, Usage ratio too high, Very low usage (possible tampering)"
+3007,Jan,40,45,,5,12.5,1.125,0,1,,,0,Normal,Very low usage (possible tampering)
