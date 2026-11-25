@@ -211,7 +211,8 @@ try:
     def load_data():
         return pd.read_csv("electricity_theft_dataset_3000houses.csv")
 
-    df = load_data()
+    df = load_data().copy()
+    
 except:
     st.error("Dataset not found")
     st.stop()
@@ -289,9 +290,9 @@ X = df[[
 y = df["Target"]
 
 @st.cache_resource
-def load_model(df):
+def load_model(_df):
 
-    X = df[[
+    X = _df[[
         "Current_Units",
         "Average_Units",
         "Month_Encoded",
@@ -301,17 +302,20 @@ def load_model(df):
         "High_Usage_Flag",
         "Low_Usage_Flag"
     ]]
-    y = df["Target"]
+    y = _df["Target"]
 
     model = RandomForestClassifier(
-        n_estimators=300,
-        max_depth=12,
+        n_estimators=100,
+        max_depth=10,
         min_samples_split=5,
-        random_state=42
+        random_state=42,
+        n_jobs=-1
     )
 
     model.fit(X, y)
     return model
+
+
 
 model = load_model(df)
 
@@ -690,7 +694,7 @@ elif menu == "👨‍💼 Verification":
             history = history.drop(idx)
             history.to_csv("verification_log.csv",index=False)
             st.success("Deleted")
-            st.experimental_rerun()
+            st.rerun()
 
     except:
         st.info("No history found")
@@ -755,11 +759,11 @@ elif menu == "➕ Add New House":
         updated_data.to_csv("electricity_theft_dataset_3000houses.csv", index=False)
         # st.cache_data.clear()
         st.cache_data.clear()
-        st.cache_resource.clear()
+        # st.cache_resource.clear()
 
         st.success(f"House {new_house_id} added successfully!")
 
-        st.rerun()
+        #st.rerun()
         
 
         # st.success(f"House {new_house_id} added successfully!")

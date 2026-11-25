@@ -32,7 +32,7 @@ HELP_TEXT = (
 
 # ---------------- helpers ----------------
 def _has(text, words):
-    return any(w in text for w in words)
+    return any(re.search(rf"\b{re.escape(w)}", text) for w in words)
 
 
 def _find_month(text, df, default):
@@ -52,7 +52,9 @@ def _find_house_id(text):
             return int(nums[0])
     return None
 
-
+def _match_house(df, hid):
+    nums = pd.to_numeric(df["House_ID"].astype(str).str.extract(r"(\d+)")[0], errors="coerce")
+    return df[nums == hid]
 def _find_top_n(text, default=5):
     m = re.search(r"top\s*(\d+)", text) or re.search(r"(\d+)\s*(?:risky|highest|most)", text)
     return max(1, min(int(m.group(1)), 50)) if m else default
@@ -131,7 +133,7 @@ def answer(query, df, selected_month):
         if log.empty or "Decision" not in log.columns:
             return "There are no verification records yet.", None
         if hid is not None:
-            h = log[log["House_ID"] == hid]
+            h = _match_house(log, hid)
             if h.empty:
                 return f"No verification records found for house **{hid}**.", None
             return f"Verification record(s) for house **{hid}** ({len(h)} found):", h
@@ -155,7 +157,7 @@ def answer(query, df, selected_month):
         _has(text, ["house", "home", "id", "status", "risk", "why", "flag", "check", "detail", "show", "tell"])
         or len(text.split()) <= 3
     ):
-        h = df[df["House_ID"] == hid]
+        h = _match_house(df, hid)
         if h.empty:
             return f"House **{hid}** was not found in the dataset.", None
         row = h[h["Month"] == month]
